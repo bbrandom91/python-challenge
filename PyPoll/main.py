@@ -1,9 +1,11 @@
-#first create dictionary where key is candidate, value is number of votes
 import csv
 
 file = 'election_data_2.csv'
+
+#first create dictionary where key is candidate, value is number of votes
 tally = {}
 
+#open the file in read mode and store the data in tally in the form {candidate : number_of_votes}
 with open(file, newline = '') as csvfile:
 	csvreader = csv.reader(csvfile, delimiter = ',')
 	first_row = next(csvreader)
@@ -13,24 +15,21 @@ with open(file, newline = '') as csvfile:
 		else:
 			tally[row[2]] = 1
 
-def get_total(x):
-	value = 0
-	for j in x:
-		value += x[j]
-	return value
-def get_winner(x):
-	winner = ''
-	for cand in x:
-		if winner not in x:
+
+#initialize total number of votes and the winner of the election; the for loop finds the desired result
+total_votes = 0
+winner = ''
+
+for cand in tally:
+	total_votes += tally[cand]
+	if winner not in tally:
+		winner = cand
+	else:
+		if tally[cand] > tally[winner]:
 			winner = cand
-		else:
-			if x[cand] > x[winner]:
-				winner = cand
-	return winner
-winner = get_winner(tally) 
-total_votes = get_total(tally)
 
 
+#Print out the election results to the terminal
 print("Election Results")
 print("______________________")
 print("Total votes: %d"%(total_votes))
@@ -43,6 +42,7 @@ print("Winner: " + winner)
 print("______________________")
 
 
+#Write the election results to a file
 with open('output.txt', 'w') as f:
 	f.flush()
 	f.write("Election Results" + "\n")
